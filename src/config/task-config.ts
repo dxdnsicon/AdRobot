@@ -2,7 +2,7 @@
  * @Author: shiningding <shiningding@tencent.com>
  * @Date: 2021-04-20 11:34:33
  * @--------------------------------------------------:
- * @LastEditTime: 2022-07-04 18:34:36
+ * @LastEditTime: 2023-10-08 18:19:28
  * @Modified By: shiningding <shiningding@tencent.com>
  * @---------------------------------------------------:
  * @Description:  一些配置项目
@@ -21,8 +21,9 @@ export const AUTO_CLOSE_TIMESTAMPS = 60000;  // 自动关闭测试客户端时�
 
 export const IMAGES_PATH = resolve(__dirname, '..', '..', 'dist');
 
+export const MAIN_APK_NAME = 'com.xingin.xhs';
 
-export const APP_PATH = resolve(__dirname, '..', '..', 'public', 'qqmusic_11.9_debug.apk');
+export const APP_PATH = resolve(__dirname, '..', '..', 'public', 'main.apk');
 
 const DEFAULT_ANDROID_DEVICE_NAME = 'qqmusic';
 
@@ -34,17 +35,17 @@ export const androidCaps = {
   deviceName: process.env.ANDROID_DEVICE_NAME || DEFAULT_ANDROID_DEVICE_NAME,
   platformVersion:
     process.env.ANDROID_PLATFORM_VERSION || DEFAULT_ANDROID_PLATFORM_VERSION,
-  appPackage: "com.tencent.qqmusic",
+  appPackage: MAIN_APK_NAME,
   appActivity: ".activity.AppStarterActivity",
   // appWaitActivity: ".activity.AppStarterActivity",
   // chromedriverExecutableDir: "/Users/shining/Documents/Dx/qqmusic/qmfe-h5-appium-launcher/chromedriver/",
-  chromedriverExecutable: '/Users/shining/Documents/Dx/qqmusic/qmfe-h5-appium-launcher/chromedriver/chromedriver83',
+  // chromedriverExecutable: '/Users/shining/Documents/Dx/qqmusic/qmfe-h5-appium-launcher/chromedriver/chromedriver83',
   // chromedriver_autodownload: true,
   noReset: true,
   chromeOptions: {
     w3c: false
-  }
-  // app: APP_PATH, // Will be added in tests
+  },
+  app: APP_PATH, // Will be added in tests
   // browserName: 'com.tencent.qqmusic'
   // browserName: 'chrome'
 };

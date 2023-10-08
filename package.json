@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "tsc -w & babel src  --extensions '.js' --out-dir es -w",
     "start:server": "node es/bin/launcher.js server",
-    "start": "node es/bin/launcher.js run",
+    "start": "node es/bin/launcher.js instance",
     "install:chrome": "node node_modules/puppeteer-core/install.js",
     "build:img": "source ./.env  && docker build -t $IMG_NAME:$IMG_TAG .",
     "build:code": "tsc && babel src  --extensions '.js' --out-dir es"
@@ -37,6 +37,7 @@
     "md5-node": "^1.0.1",
     "mysql2": "^2.3.3",
     "node-cron": "^3.0.0",
+    "nodejs-adb-wrapper": "^1.3.7",
     "opn": "^6.0.0",
     "pngjs": "^6.0.0",
     "puppeteer-core": "10.2.0",

@@ -20,3 +20,7 @@ export const closeWebview = async (client: any) => {
 export const executeAdb = (adb: string) => {
   return `to do`
 }
+
+export const installApp = (path: string) => {
+  executeAdb(`adb install ${path}`)
+}
