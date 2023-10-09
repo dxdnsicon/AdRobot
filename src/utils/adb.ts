@@ -40,3 +40,27 @@ export const launchApp = async (apkName: string, deviceName: string) => {
   const excRsp = await execCmd(`adb -s ${deviceName} am start ${apkName}`);
   return !!excRsp;
 }
+
+// 模拟键盘输入
+export const inputKeyDown = async (str: string, deviceName: string) => {
+  const excRsp = await execCmd(`adb -s ${deviceName} shell input keyboard text "${str}"`)
+  return excRsp;
+}
+
+// 按下HOME键
+export const inputHome = async (deviceName: string) => {
+  const excRsp = await execCmd(`adb -s ${deviceName} shell input keyevent 3`)
+  return excRsp;
+}
+
+// 滑动
+export const inputSwipe = async (start: [number, number], end: [number, number], deviceName: string) => {
+  const excRsp = await execCmd(`adb -s ${deviceName} shell input swipe ${start[0]} ${start[1]} ${end[0]} ${end[1]}`)
+  return excRsp;
+}
+
+// 后退键盘
+export const inputBack = async (start: [number, number], deviceName: string) => {
+  const excRsp = await execCmd(`adb -s ${deviceName} shell input tap ${start[0]} ${start[1]}`)
+  return excRsp;
+}
