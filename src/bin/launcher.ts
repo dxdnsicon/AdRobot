@@ -6,6 +6,7 @@ import { program } from "commander";
 import Core from '../appium/core';
 import startServer from "../appium/server";
 import startApp from "../appium/appinit";
+import log from '../utils/log'
 
 const packJson = require("../../package.json");
 program

@@ -2,7 +2,7 @@
  * @Author: shiningding <shiningding@tencent.com>
  * @Date: 2021-04-20 11:34:33
  * @--------------------------------------------------:
- * @LastEditTime: 2023-10-08 18:19:28
+ * @LastEditTime: 2023-10-09 19:38:28
  * @Modified By: shiningding <shiningding@tencent.com>
  * @---------------------------------------------------:
  * @Description:  一些配置项目
@@ -23,46 +23,28 @@ export const IMAGES_PATH = resolve(__dirname, '..', '..', 'dist');
 
 export const MAIN_APK_NAME = 'com.xingin.xhs';
 
+export const ANDROID_OS_PERMISSION = 'com.android.permissioncontroller';
+
 export const APP_PATH = resolve(__dirname, '..', '..', 'public', 'main.apk');
 
-const DEFAULT_ANDROID_DEVICE_NAME = 'qqmusic';
+// app的activitys
+export const ActivitysMap = {
+  'WELCOME': 'com.xingin.login.activity.WelcomeActivity', // 欢迎登录页面
+  'LOGIN': 'com.xingin.login.activity.LoginActivity', // 登录页面
+  "HOME": 'com.xingin.xhs.index.v2.IndexActivityV2', // HOME页面
+  "PERMISSION": 'com.android.packageinstaller.permission.ui.GrantPermissionsActivity', // 授权页
+  "CAPAENTRANCE": 'com.xingin.capa.lib.entrance.CapaEntranceActivity', // 选择内容页面
+  "INFOEDIT": 'com.xingin.capa.v2.feature.post.lcb.activity.CapaLCBPostNoteActivity' // 内容编辑页面
+}
 
-const DEFAULT_ANDROID_PLATFORM_VERSION = '10';
-
-export const androidCaps = {
-  platformName: 'Android',
-  automationName: 'appium',
-  deviceName: process.env.ANDROID_DEVICE_NAME || DEFAULT_ANDROID_DEVICE_NAME,
-  platformVersion:
-    process.env.ANDROID_PLATFORM_VERSION || DEFAULT_ANDROID_PLATFORM_VERSION,
-  appPackage: MAIN_APK_NAME,
-  appActivity: ".activity.AppStarterActivity",
-  // appWaitActivity: ".activity.AppStarterActivity",
-  // chromedriverExecutableDir: "/Users/shining/Documents/Dx/qqmusic/qmfe-h5-appium-launcher/chromedriver/",
-  // chromedriverExecutable: '/Users/shining/Documents/Dx/qqmusic/qmfe-h5-appium-launcher/chromedriver/chromedriver83',
-  // chromedriver_autodownload: true,
-  noReset: true,
-  chromeOptions: {
-    w3c: false
-  },
-  app: APP_PATH, // Will be added in tests
-  // browserName: 'com.tencent.qqmusic'
-  // browserName: 'chrome'
-};
-
-const serverConfig: any = {
-  path: '/wd/hub',
-  host: process.env.APPIUM_HOST || 'localhost',
-  port: process.env.APPIUM_PORT || 4723,
-  logLevel: 'info'
-};
-
-export const ANDROID_OPTIONS = Object.assign(
-  {
-    capabilities: androidCaps
-  },
-  serverConfig
-);
+export const MAIN_BTN_POSITION: Record<string, [number, number]> = {
+  'PUSH': [590, 2220],
+  'EDIT_NEXT': [920, 164],
+  'HOME_ADD': [544, 2266],
+  'PIC_1': [307,461],
+  'EDIT_PICCHOSE_NEXT': [905,2266],
+  'PERMISSION_OK': [768, 2192]
+}
 
 export const initPath = (path) => {
   fs.exists(path, async (exists) => {

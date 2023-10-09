@@ -1,10 +1,12 @@
-import { checkHasInstall, launchApp } from "./adb";
-import { execCmd } from "./index";
+import { checkHasInstall, launchApp, passAndroidPermission, checkAcvitity, inputTap } from "./adb";
+import { execCmd, formateTime, sleep } from "./index";
+import { ActivitysMap, MAIN_BTN_POSITION } from '../config/task-config';
 
 class MyAppBridge {
   apk = '';
   apkName = '';
   devices = [];
+  Activitys = [];
   constructor(props: {
     apk: string;
     apkName: string;
@@ -78,10 +80,34 @@ class MyAppBridge {
   };
 
   public async startApp() {
+    console.log('startApp...')
     for (let i in this.devices) {
       const item = this.devices[i];
-      await launchApp(this.apkName, item.name)
+      await launchApp(`${this.apkName}/${ActivitysMap.HOME}`, item.name);
+      await passAndroidPermission(item.name);
     }
+    return null;
+  };
+
+  // 执行主要任务Task
+  public async mainTask() {
+    console.log('run Task...')
+    for (let i in this.devices) {
+      const item = this.devices[i];
+      if (await checkAcvitity(ActivitysMap.HOME, item.name)) {
+        // 如果是HOME洁面就开始主任务
+        await inputTap(MAIN_BTN_POSITION.HOME_ADD, item.name);
+        await passAndroidPermission(item.name);
+        await inputTap(MAIN_BTN_POSITION.PIC_1, item.name);
+        await inputTap(MAIN_BTN_POSITION.EDIT_PICCHOSE_NEXT, item.name);
+        await inputTap(MAIN_BTN_POSITION.EDIT_NEXT, item.name);
+        await sleep(5000)
+        await inputTap(MAIN_BTN_POSITION.PUSH, item.name);
+      } else {
+        console.log('not home page')
+      }
+    }
+    return null;
   }
 }
 

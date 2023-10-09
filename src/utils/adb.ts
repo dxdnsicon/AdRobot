@@ -1,4 +1,5 @@
-import { execCmd } from "./index";
+import { execCmd, sleep } from "./index";
+import { ActivitysMap, MAIN_BTN_POSITION } from '../config/task-config';
 
 // 获取android打开App拉起指定页面的adb命令
 export const getAndroidOpenUrl = (url: string): string => {
@@ -31,13 +32,14 @@ export const checkHasInstall = async (apkName: string, deviceName: string) => {
 }
 
 // 查看当前在哪个activity
-export const findActivitysNow = async () => {
-  const excRsp = await execCmd(`adb shell dumpsys window | grep mCurrentFocus`)
+export const findActivitysNow = async (deviceName: string) => {
+  const excRsp = await execCmd(`adb -s ${deviceName} shell dumpsys window | grep mCurrentFocus`);
+  console.log('Now Activitys:', excRsp)
   return excRsp;
 }
 
-export const launchApp = async (apkName: string, deviceName: string) => {
-  const excRsp = await execCmd(`adb -s ${deviceName} am start ${apkName}`);
+export const launchApp = async (AppPath: string, deviceName: string) => {
+  const excRsp = await execCmd(`adb -s ${deviceName} shell am start ${AppPath}`);
   return !!excRsp;
 }
 
@@ -60,7 +62,34 @@ export const inputSwipe = async (start: [number, number], end: [number, number],
 }
 
 // 后退键盘
-export const inputBack = async (start: [number, number], deviceName: string) => {
+export const inputBack = async (deviceName: string) => {
+  const excRsp = await execCmd(`adb -s ${deviceName} shell input keyevent 4`)
+  return excRsp;
+}
+
+// 点击指定位置
+export const inputTap = async (start: [number, number], deviceName: string) => {
+  await sleep(1000);
   const excRsp = await execCmd(`adb -s ${deviceName} shell input tap ${start[0]} ${start[1]}`)
   return excRsp;
+}
+
+// 判断是否是授权，如果是就点击允许
+export const passAndroidPermission = async (deviceName: string) => {
+  await sleep(1000);
+  const excRsp = await findActivitysNow(deviceName);
+  if (excRsp.indexOf(ActivitysMap.PERMISSION) > -1) {
+    await inputTap(MAIN_BTN_POSITION.PERMISSION_OK, deviceName);
+  }
+  return !!excRsp;
+}
+
+// 判断是否是某个activitys
+export const checkAcvitity = async (activityName: string, deviceName: string) => {
+  await sleep(1000);
+  const excRsp = await findActivitysNow(deviceName);
+  if (excRsp.indexOf(activityName) > -1) {
+    return true;
+  }
+  return false;
 }
