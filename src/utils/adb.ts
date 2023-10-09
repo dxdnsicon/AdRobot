@@ -1,4 +1,4 @@
-
+import { execCmd } from "./index";
 
 // 获取android打开App拉起指定页面的adb命令
 export const getAndroidOpenUrl = (url: string): string => {
@@ -23,4 +23,20 @@ export const executeAdb = (adb: string) => {
 
 export const installApp = (path: string) => {
   executeAdb(`adb install ${path}`)
+}
+// 判断App是否已安装
+export const checkHasInstall = async (apkName: string, deviceName: string) => {
+  const excRsp = await execCmd(`adb -s ${deviceName} shell pm -l | grep ${apkName}`);
+  return !!excRsp;
+}
+
+// 查看当前在哪个activity
+export const findActivitysNow = async () => {
+  const excRsp = await execCmd(`adb shell dumpsys window | grep mCurrentFocus`)
+  return excRsp;
+}
+
+export const launchApp = async (apkName: string, deviceName: string) => {
+  const excRsp = await execCmd(`adb -s ${deviceName} am start ${apkName}`);
+  return !!excRsp;
 }

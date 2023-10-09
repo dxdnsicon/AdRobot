@@ -13,8 +13,10 @@ const startApp = async () => {
   try {
     await client.initDevices();
     await client.installApp();
+    await client.startApp();
     return client;
   } catch(e) {
+    console.error('error:', e)
     throw null;
   }
 }

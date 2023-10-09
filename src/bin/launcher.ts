@@ -21,8 +21,9 @@ program
 // 创建一个实例
 program
   .command("instance")
-  .action(() => {
-    startApp();
+  .action(async () => {
+    await startApp();
+    process.exit(0)
   });
 
 program.parse(process.argv);
