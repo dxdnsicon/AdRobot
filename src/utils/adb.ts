@@ -1,5 +1,12 @@
 import { execCmd, sleep } from "./index";
-import { ActivitysMap, MAIN_BTN_POSITION } from '../config/task-config';
+import { ActivitysMap, MAIN_BTN_POSITION, getRealPositionSize, baseSize } from '../config/task-config';
+import { DeviceInfo } from "../typings/global";
+
+// 设置设备尺寸
+export const setWmSize = async (deviceName: string) => {
+  const excRsp = await execCmd(`adb -s ${deviceName} shell wm size ${baseSize[0]}x${baseSize[1]}`);
+  return !!excRsp;
+}
 
 // 获取android打开App拉起指定页面的adb命令
 export const getAndroidOpenUrl = (url: string): string => {
@@ -17,14 +24,24 @@ export const closeWebview = async (client: any) => {
   return await client.executeAsyncScript('Music.client.open("ui", "closeWebview")', [])
 }
 
-// 执行adb脚本命令
-export const executeAdb = (adb: string) => {
-  return `to do`
+
+export const getClientSize = async (deviceName: string) => {
+  const excRsp = await execCmd(`adb -s ${deviceName} shell wm size`);
+  let list = null;
+  if (excRsp) {
+    list = excRsp.match(/\d+/g);
+    return list.map(x => +x);
+  } else {
+    throw 'get devices size error' + excRsp
+  }
 }
 
-export const installApp = (path: string) => {
-  executeAdb(`adb install ${path}`)
+// 输入指定文本
+export const inputText = async (text: string, deviceName: string) => {
+  const excRsp = await execCmd(`adb -s ${deviceName} shell input text ${text}`);
+  return !!excRsp;
 }
+
 // 判断App是否已安装
 export const checkHasInstall = async (apkName: string, deviceName: string) => {
   const excRsp = await execCmd(`adb -s ${deviceName} shell pm -l | grep ${apkName}`);
@@ -69,27 +86,43 @@ export const inputBack = async (deviceName: string) => {
 
 // 点击指定位置
 export const inputTap = async (start: [number, number], deviceName: string) => {
-  await sleep(1000);
   const excRsp = await execCmd(`adb -s ${deviceName} shell input tap ${start[0]} ${start[1]}`)
   return excRsp;
 }
 
-// 判断是否是授权，如果是就点击允许
-export const passAndroidPermission = async (deviceName: string) => {
+// 点击按钮
+export const tapBtn = async (name: MAIN_BTN_POSITION, device: DeviceInfo) => {
   await sleep(1000);
-  const excRsp = await findActivitysNow(deviceName);
+  const position = getRealPositionSize(device.size, name);
+  console.log(`excute tap ${name}, position: ${position}`)
+  const excRsp = await inputTap(position, device.name);
+  return excRsp;
+}
+
+// 判断是否是授权，如果是就点击允许
+export const passAndroidPermission = async (device) => {
+  await sleep(1000);
+  const excRsp = await findActivitysNow(device.name);
   if (excRsp.indexOf(ActivitysMap.PERMISSION) > -1) {
-    await inputTap(MAIN_BTN_POSITION.PERMISSION_OK, deviceName);
+    await tapBtn(MAIN_BTN_POSITION.PERMISSION_OK, device);
   }
   return !!excRsp;
 }
 
 // 判断是否是某个activitys
-export const checkActivity = async (activityName: string, deviceName: string) => {
+export const checkActivity = async (activityName: string | string[], deviceName: string) => {
   await sleep(1000);
   const excRsp = await findActivitysNow(deviceName);
-  if (excRsp.indexOf(activityName) > -1) {
-    return true;
+  if (typeof activityName === 'string') {
+    if (excRsp.indexOf(activityName) > -1) {
+      return true;
+    }
+  } else {
+    for (let i in activityName) {
+      if (excRsp.indexOf(activityName[i]) > -1) {
+        return true;
+      }
+    }
   }
   return false;
 }

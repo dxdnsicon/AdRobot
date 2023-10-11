@@ -14,10 +14,11 @@ const startApp = async () => {
     await client.initDevices();
     await client.installApp();
     await client.startApp();
+    await client.loginApp();
     await client.mainTask();
     return client;
   } catch(e) {
-    console.error('error:', e)
+    console.error('error:', e?.toString?.())
     throw null;
   }
 }

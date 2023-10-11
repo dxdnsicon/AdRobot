@@ -26,5 +26,4 @@ program
     await startApp();
     process.exit(0)
   });
-
 program.parse(process.argv);
