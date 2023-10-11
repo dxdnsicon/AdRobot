@@ -85,11 +85,29 @@ export const passAndroidPermission = async (deviceName: string) => {
 }
 
 // 判断是否是某个activitys
-export const checkAcvitity = async (activityName: string, deviceName: string) => {
+export const checkActivity = async (activityName: string, deviceName: string) => {
   await sleep(1000);
   const excRsp = await findActivitysNow(deviceName);
   if (excRsp.indexOf(activityName) > -1) {
     return true;
   }
   return false;
+}
+
+// 等待某个activity出现
+export const awaitActivity = (activityName: string, deviceName: string) => {
+  return new Promise((resolve, reject) => {
+    let count = 0;
+    let timer = setInterval(async () => {
+      count ++;
+      const isActivity = await checkActivity(activityName, deviceName);
+      if (isActivity) {
+        resolve(true);
+        clearInterval(timer);
+        timer = null;
+      } else if (count >= 30) {
+        reject(`${activityName} await timeout！`);
+      }
+    }, 1000)
+  })
 }
