@@ -3,6 +3,7 @@ import { join } from 'path';
 import { exec } from 'child_process';
 import log from './log';
 import crypto from 'crypto';
+import { SDK_PATH, IS_MACOS } from '../config/task-config';
 
 export const writeFile = (dir, fileName, content) => {
   if (!fs.existsSync(dir)) {
@@ -13,6 +14,11 @@ export const writeFile = (dir, fileName, content) => {
 
 export const execCmd = async (cmd: string): Promise<string> => {
   return new Promise((resolve) => {
+    if (cmd.indexOf('adb -s') === 0) {
+      // adb命令
+      cmd = cmd.replace('adb', SDK_PATH);
+    }
+    console.log('cmd', cmd)
     exec (cmd, (error, stdout, stderr) => {
       if (error) {
         log ('error:' + stderr);
@@ -27,6 +33,11 @@ export const execCmd = async (cmd: string): Promise<string> => {
       }
     });
   })
+}
+
+if (IS_MACOS) {
+  // 授权
+  execCmd(`chmod 777 ${SDK_PATH}`);
 }
 
 export const formateTime = (time, fmt) => {

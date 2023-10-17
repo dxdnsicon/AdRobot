@@ -2,7 +2,7 @@
  * @Author: shiningding <shiningding@tencent.com>
  * @Date: 2021-04-20 11:34:33
  * @--------------------------------------------------:
- * @LastEditTime: 2023-10-11 20:50:19
+ * @LastEditTime: 2023-10-12 14:51:10
  * @Modified By: shiningding <shiningding@tencent.com>
  * @---------------------------------------------------:
  * @Description:  一些配置项目
@@ -20,6 +20,8 @@ export const IS_MACOS = platform() === 'darwin';
 export const AUTO_CLOSE_TIMESTAMPS = 60000;  // 自动关闭测试客户端时间
 
 export const IMAGES_PATH = resolve(__dirname, '..', '..', 'dist');
+
+export const SDK_PATH = resolve(__dirname, '..', '..', 'sdk', IS_MACOS ? 'mac' : 'win', 'platform-tools/adb');
 
 export const MAIN_APK_NAME = 'com.xingin.xhs';
 

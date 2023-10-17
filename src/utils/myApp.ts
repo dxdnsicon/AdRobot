@@ -27,7 +27,8 @@ class MyAppBridge {
           return {
             name: item[0],
             status: item[1],
-            size: null
+            size: null,
+            realSize: null
           }
         }
       })?.filter(x => !!x && x.status === 'device')
@@ -38,6 +39,7 @@ class MyAppBridge {
       await setWmSize(item.name)
       const size = await getClientSize(item.name);
       devices[i].size = baseSize;
+      devices[i].realSize = size;
     }
     console.log('list', devices);
     this.devices = devices;
@@ -114,9 +116,9 @@ class MyAppBridge {
           await tapBtn(MAIN_BTN_POSITION.IPHEON_LOGIN_BTN, item);
           await tapBtn(MAIN_BTN_POSITION.PASS_LOGIN_BTN, item);
           await tapBtn(MAIN_BTN_POSITION.INPUT_ACCOUNT, item);
-          await inputText('21321', item.name)
+          await inputText('18883346889', item.name)
           await tapBtn(MAIN_BTN_POSITION.INPUT_PASSWORD, item);
-          await inputText('123213', item.name)
+          await inputText('xhsDINGxing1993', item.name)
           await tapBtn(MAIN_BTN_POSITION.LOGIN_PROTOCAL, item);
           await tapBtn(MAIN_BTN_POSITION.LOGIN_BTN, item);
         } else {

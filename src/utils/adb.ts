@@ -114,12 +114,12 @@ export const checkActivity = async (activityName: string | string[], deviceName:
   await sleep(1000);
   const excRsp = await findActivitysNow(deviceName);
   if (typeof activityName === 'string') {
-    if (excRsp.indexOf(activityName) > -1) {
+    if (excRsp?.indexOf(activityName) > -1) {
       return true;
     }
   } else {
     for (let i in activityName) {
-      if (excRsp.indexOf(activityName[i]) > -1) {
+      if (excRsp?.indexOf(activityName[i]) > -1) {
         return true;
       }
     }
