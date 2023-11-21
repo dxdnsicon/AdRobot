@@ -1,19 +1,24 @@
-import { checkHasInstall, launchApp, passAndroidPermission, awaitActivity, tapBtn, getClientSize, inputText, checkActivity, setWmSize } from "./adb";
-import { execCmd, formateTime, sleep } from "./index";
+import { checkHasInstall, launchApp, passAndroidPermission, awaitActivity, tapBtn, getClientSize, inputText, checkActivity, setWmSize, grantApp } from "../adb/adb";
+import { uploadPic } from '../adb/photo';
+import { execCmd, formateTime, sleep } from "../utils/index";
 import { ActivitysMap, MAIN_BTN_POSITION, getRealPositionSize, baseSize } from '../config/task-config';
-import { DeviceInfo } from '../typings/global'
+import { DeviceInfo, MainProps } from '../typings/global'
 
 class MyAppBridge {
   apk = '';
   apkName = '';
   devices: DeviceInfo[] = [];
   Activitys: string[] = [];
+  props: MainProps;
   constructor(props: {
     apk: string;
     apkName: string;
+    props: MainProps
   }) {
     this.apk = props.apk;
     this.apkName = props.apkName;
+    console.log('props', props)
+    this.props = props.props;
   };
   public async initDevices() {
     const excRsp = await execCmd('adb devices');
@@ -80,6 +85,7 @@ class MyAppBridge {
           const excRsp = await checkHasInstall(this.apkName, item.name);
           if (excRsp) {
             // 安装成功
+            await grantApp(item.name);
             console.log('install success')
             installCallback(i);
             clearInterval(timer);
@@ -110,15 +116,15 @@ class MyAppBridge {
         const item = this.devices[i];
         if (await checkActivity([ActivitysMap.LOGIN_FLASH, ActivitysMap.WELCOME], item.name)) {
           // 如果是登录界面需要触发登录
-          console.log('need login...')
+          console.log('need login...', this.props.account?.[i])
           await awaitActivity(ActivitysMap.WELCOME, item.name)
           await tapBtn(MAIN_BTN_POSITION.MORE_LOGIN_BTN, item);
           await tapBtn(MAIN_BTN_POSITION.IPHEON_LOGIN_BTN, item);
           await tapBtn(MAIN_BTN_POSITION.PASS_LOGIN_BTN, item);
           await tapBtn(MAIN_BTN_POSITION.INPUT_ACCOUNT, item);
-          await inputText('18883346889', item.name)
+          await inputText(this.props.account?.[i]?.account, item.name)
           await tapBtn(MAIN_BTN_POSITION.INPUT_PASSWORD, item);
-          await inputText('xhsDINGxing1993', item.name)
+          await inputText(this.props.account?.[i]?.password, item.name)
           await tapBtn(MAIN_BTN_POSITION.LOGIN_PROTOCAL, item);
           await tapBtn(MAIN_BTN_POSITION.LOGIN_BTN, item);
         } else {
@@ -155,6 +161,20 @@ class MyAppBridge {
       return null;
     } catch (e) {
       console.log('main Task error:', e)
+    }
+  }
+
+  // 上传图片
+  public async uploadPic() {
+    try {
+      console.log('upload pic')
+      for (let i in this.devices) {
+        const item = this.devices[i];
+        await uploadPic(item.name, this.props.picDir)
+      }
+      return null;
+    } catch (e) {
+      console.log('upload pic error:', e)
     }
   }
 }

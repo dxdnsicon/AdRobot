@@ -1,5 +1,5 @@
-import { execCmd, sleep } from "./index";
-import { ActivitysMap, MAIN_BTN_POSITION, getRealPositionSize, baseSize } from '../config/task-config';
+import { execCmd, sleep } from "../utils/index";
+import { ActivitysMap, MAIN_BTN_POSITION, getRealPositionSize, baseSize, MAIN_APK_NAME } from '../config/task-config';
 import { DeviceInfo } from "../typings/global";
 
 // 设置设备尺寸
@@ -34,6 +34,21 @@ export const getClientSize = async (deviceName: string) => {
   } else {
     throw 'get devices size error' + excRsp
   }
+}
+
+export const grantApp = async (deviceName: string) => {
+  await execCmd(`adb -s ${deviceName} shell appops set ${MAIN_APK_NAME} android:read_external_storage allow`)
+  const GrantList = [
+    'android.permission.WRITE_EXTERNAL_STORAGE',
+    'android.permission.ACCESS_FINE_LOCATION',
+    'android.permission.ACCESS_MEDIA_LOCATION',
+    'android.permission.RECORD_AUDIO'
+  ]
+  GrantList.forEach(async (item) => {
+    console.log('Now grantApp:', item)
+    await execCmd(`adb -s ${deviceName} shell pm grant ${MAIN_APK_NAME} ${item}`);
+  })
+  return true;
 }
 
 // 输入指定文本

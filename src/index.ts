@@ -8,6 +8,6 @@
  * @Description: 入口文件
  */
 
-import core from './appium/core';
+import startApp from "./appium/appinit";
 
-export default core;
+export default startApp;

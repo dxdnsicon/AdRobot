@@ -1,17 +1,17 @@
 // 连接app
-import MyAppBridge from '../utils/myApp';
+import MyAppBridge from './myApp';
 import { APP_PATH, AUTO_CLOSE_TIMESTAMPS, MAIN_APK_NAME } from '../config/task-config';
-import { sleep } from '../utils/index';
+import { MainProps } from '../typings/global';
 
-// curl -XDELETE http://127.0.0.1:4723/wd/hub/session/078036bf-ee98-49ba-907f-80f22c96c42c
-
-const startApp = async () => {
+const startApp = async (props: MainProps) => {
   const client = new MyAppBridge({
     apk: APP_PATH,
-    apkName: MAIN_APK_NAME
+    apkName: MAIN_APK_NAME,
+    props,
   });
   try {
     await client.initDevices();
+    await client.uploadPic();
     await client.installApp();
     await client.startApp();
     await client.loginApp();

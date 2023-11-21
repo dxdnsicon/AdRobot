@@ -1,7 +1,7 @@
 // 会员中心测试用例，
 import log from '../utils/log';
 import { sleep } from '../utils/index';
-import { closeWebview } from '../utils/adb';
+import { closeWebview } from '../adb/adb';
 
 // 测试底部按钮跳转链接是否是集权页
 const checkBottomBarJump = async (client: any): Promise<boolean> => {

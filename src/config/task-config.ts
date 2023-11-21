@@ -2,7 +2,7 @@
  * @Author: shiningding <shiningding@tencent.com>
  * @Date: 2021-04-20 11:34:33
  * @--------------------------------------------------:
- * @LastEditTime: 2023-10-12 14:51:10
+ * @LastEditTime: 2023-11-21 16:08:22
  * @Modified By: shiningding <shiningding@tencent.com>
  * @---------------------------------------------------:
  * @Description:  一些配置项目
@@ -59,16 +59,16 @@ export enum MAIN_BTN_POSITION {
   PERMISSION_OK = 'PERMISSION_OK'
 }
 
-export const baseSize: [number, number] = [1080, 2340];
+export const baseSize: [number, number] = [1080, 2400];
 export const baseBtnPosition = {
-  [MAIN_BTN_POSITION.INDEX_OK]: [520, 1580],
+  [MAIN_BTN_POSITION.INDEX_OK]: [520, 1602],
   [MAIN_BTN_POSITION.MORE_LOGIN_BTN]: [524, 1850],  // 换一个登录方式
-  [MAIN_BTN_POSITION.IPHEON_LOGIN_BTN]: [300, 2000], // 选择手机号登录
-  [MAIN_BTN_POSITION.PASS_LOGIN_BTN]: [260, 650], // 选择密码登录
-  [MAIN_BTN_POSITION.INPUT_ACCOUNT]: [480, 520], // 登录界面输入账号
-  [MAIN_BTN_POSITION.INPUT_PASSWORD]: [350,690], // 密码输入框
-  [MAIN_BTN_POSITION.LOGIN_PROTOCAL]: [170,1050],
-  [MAIN_BTN_POSITION.LOGIN_BTN]: [500, 930], // 登录弹窗
+  [MAIN_BTN_POSITION.IPHEON_LOGIN_BTN]: [220, 2050], // 选择手机号登录
+  [MAIN_BTN_POSITION.PASS_LOGIN_BTN]: [250, 600], // 选择密码登录
+  [MAIN_BTN_POSITION.INPUT_ACCOUNT]: [480, 488], // 登录界面输入账号
+  [MAIN_BTN_POSITION.INPUT_PASSWORD]: [350, 640], // 密码输入框
+  [MAIN_BTN_POSITION.LOGIN_PROTOCAL]: [153, 970],
+  [MAIN_BTN_POSITION.LOGIN_BTN]: [500, 860], // 登录弹窗
   [MAIN_BTN_POSITION.PUSH]: [590, 2220],
   [MAIN_BTN_POSITION.EDIT_NEXT]: [920, 164],
   [MAIN_BTN_POSITION.HOME_ADD]: [544, 2266],
