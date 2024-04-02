@@ -138,24 +138,14 @@ class MyAppBridge {
   };
 
   // 执行主要任务Task
-  public async mainTask() {
+  public async mainTask(taskName: string) {
     try {
       console.log('run Task...')
       for (let i in this.devices) {
         const item = this.devices[i];
-        if (await awaitActivity(ActivitysMap.HOME, item.name)) {
-          // 如果是HOME洁面就开始主任务
-          await tapBtn(MAIN_BTN_POSITION.HOME_ADD, item);
-          await passAndroidPermission(item.name);
-          await awaitActivity(ActivitysMap.CAPAENTRANCE, item.name)
-          await tapBtn(MAIN_BTN_POSITION.PIC_1, item);
-          await tapBtn(MAIN_BTN_POSITION.EDIT_PICCHOSE_NEXT, item);
-          await sleep(2000);
-          await tapBtn(MAIN_BTN_POSITION.EDIT_NEXT, item);
-          await awaitActivity(ActivitysMap.INFOEDIT, item.name)
-          await tapBtn(MAIN_BTN_POSITION.PUSH, item);
-        } else {
-          console.log('not home page')
+        const task = require(`./task/${taskName}`);
+        if (task?.default) {
+          await task.default(item);
         }
       }
       return null;

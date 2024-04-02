@@ -54,6 +54,7 @@ export const grantApp = async (deviceName: string) => {
 // 输入指定文本
 export const inputText = async (text: string, deviceName: string) => {
   const excRsp = await execCmd(`adb -s ${deviceName} shell input text ${text}`);
+  await sleep(1000);
   return !!excRsp;
 }
 
@@ -118,16 +119,20 @@ export const tapBtn = async (name: MAIN_BTN_POSITION, device: DeviceInfo) => {
 export const passAndroidPermission = async (device) => {
   await sleep(1000);
   const excRsp = await findActivitysNow(device.name);
-  if (excRsp.indexOf(ActivitysMap.PERMISSION) > -1) {
+  if (excRsp?.indexOf(ActivitysMap.PERMISSION) > -1) {
     await tapBtn(MAIN_BTN_POSITION.PERMISSION_OK, device);
   }
   return !!excRsp;
 }
 
 // 判断是否是某个activitys
-export const checkActivity = async (activityName: string | string[], deviceName: string) => {
+export const checkActivity = async (activityName: string | string[], deviceName: string, flg = 3) => {
   await sleep(1000);
   const excRsp = await findActivitysNow(deviceName);
+  if (excRsp.indexOf('mCurrentFocus=null') > -1) {
+    // 暂时没有找到mainactivitys
+    return await checkActivity(activityName, deviceName, flg)
+  }
   if (typeof activityName === 'string') {
     if (excRsp?.indexOf(activityName) > -1) {
       return true;

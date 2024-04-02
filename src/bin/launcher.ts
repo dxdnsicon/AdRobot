@@ -15,10 +15,11 @@ program
     await startApp({
       picDir: '/Users/shining/Downloads/test',
       content: '测试文案',
+      task: 'publish',
       account: [
         {
-          account: 'xxx',
-          password: 'aaa'
+          account: '13148716794',
+          password: '19930505'
         }
       ]
     });

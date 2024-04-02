@@ -15,7 +15,7 @@ const startApp = async (props: MainProps) => {
     await client.installApp();
     await client.startApp();
     await client.loginApp();
-    await client.mainTask();
+    await client.mainTask(props.task);
     return client;
   } catch(e) {
     console.error('error:', e?.toString?.())

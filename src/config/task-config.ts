@@ -2,7 +2,7 @@
  * @Author: shiningding <shiningding@tencent.com>
  * @Date: 2021-04-20 11:34:33
  * @--------------------------------------------------:
- * @LastEditTime: 2023-11-21 16:08:22
+ * @LastEditTime: 2024-04-02 16:35:34
  * @Modified By: shiningding <shiningding@tencent.com>
  * @---------------------------------------------------:
  * @Description:  一些配置项目
@@ -56,10 +56,14 @@ export enum MAIN_BTN_POSITION {
   HOME_ADD = 'HOME_ADD',
   PIC_1 = 'PIC_1', 
   EDIT_PICCHOSE_NEXT = 'EDIT_PICCHOSE_NEXT',
-  PERMISSION_OK = 'PERMISSION_OK'
+  PERMISSION_OK = 'PERMISSION_OK',
+  FIRST_TAB = 'FIRST_TAB'
 }
 
 export const baseSize: [number, number] = [1080, 2400];
+
+export const yOffset = 0; // Y轴因为通顶，可能会有一定的偏移
+
 export const baseBtnPosition = {
   [MAIN_BTN_POSITION.INDEX_OK]: [520, 1602],
   [MAIN_BTN_POSITION.MORE_LOGIN_BTN]: [524, 1850],  // 换一个登录方式
@@ -74,7 +78,8 @@ export const baseBtnPosition = {
   [MAIN_BTN_POSITION.HOME_ADD]: [544, 2266],
   [MAIN_BTN_POSITION.PIC_1]: [307,461],
   [MAIN_BTN_POSITION.EDIT_PICCHOSE_NEXT]: [905,2266],
-  [MAIN_BTN_POSITION.PERMISSION_OK]: [768, 2192]
+  [MAIN_BTN_POSITION.PERMISSION_OK]: [768, 2192],
+  [MAIN_BTN_POSITION.FIRST_TAB]: [116, 2306]
 };
 
 type BTN_NAME = keyof typeof baseBtnPosition;
@@ -82,7 +87,7 @@ type BTN_NAME = keyof typeof baseBtnPosition;
 export const getRealPositionSize = (clientSize: [number, number], keyName: BTN_NAME): [number, number] => {
   const baseSizeBtn = baseBtnPosition[keyName];
   console.log('baseSizeBtn', keyName, baseSizeBtn, baseSize, clientSize )
-  return [(baseSizeBtn[0] / baseSize[0]) * clientSize[0], (baseSizeBtn[1] / baseSize[1]) * clientSize[1]]
+  return [(baseSizeBtn[0] / baseSize[0]) * clientSize[0], (baseSizeBtn[1] / baseSize[1]) * clientSize[1] + yOffset]
 };
 
 export const initPath = (path) => {
