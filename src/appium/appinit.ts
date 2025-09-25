@@ -11,7 +11,7 @@ const startApp = async (props: MainProps) => {
   });
   try {
     await client.initDevices();
-    await client.uploadPic();
+    // await client.uploadPic();
     await client.installApp();
     await client.startApp();
     await client.loginApp();

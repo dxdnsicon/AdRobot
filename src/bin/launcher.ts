@@ -13,7 +13,7 @@ program
   .command("instance")
   .action(async () => {
     await startApp({
-      picDir: '/Users/shining/Downloads/test',
+      picDir: '/data/www/AdRobot/dist',
       content: '测试文案',
       task: 'publish',
       account: [

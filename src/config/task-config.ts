@@ -21,7 +21,7 @@ export const AUTO_CLOSE_TIMESTAMPS = 60000;  // 自动关闭测试客户端时�
 
 export const IMAGES_PATH = resolve(__dirname, '..', '..', 'dist');
 
-export const SDK_PATH = resolve(__dirname, '..', '..', 'sdk', IS_MACOS ? 'mac' : 'win', 'platform-tools/adb');
+export const SDK_PATH = resolve(__dirname, '..', '..', 'sdk', IS_MACOS ? 'mac' : 'linux', 'platform-tools/adb');
 
 export const MAIN_APK_NAME = 'com.xingin.xhs';
 
